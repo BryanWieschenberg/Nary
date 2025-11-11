@@ -3,17 +3,17 @@
 all: build compile run
 
 build:
-	cmake -B build -S .
-	cmake --build build
+	@cmake -B build -S . > /dev/null
+	@cmake --build build > /dev/null
 
 compile: build
-	./build/nary examples/main.na main
+	@./build/nary examples/main.na main
 
 run:
-	./build/main
+	@./build/main
 
 echo:
 	@echo $$?
 
 clean:
-	rm -rf build main
+	@rm -rf build main

@@ -15,14 +15,15 @@ struct Token {
     TokenType type;
     std::string_view lexeme;
     size_t line;
-    size_t column;
+    size_t col;
 };
 
+std::string to_str(TokenType type);
 std::string display_token(const Token& token);
 
 class Lexer {
 public:
-    explicit Lexer(std::string_view src);
+    Lexer(std::string_view src);
     
     std::vector<Token> tokenize();
 
@@ -33,7 +34,7 @@ private:
     size_t col;
 
     char peek() const;
-    char get();
+    char consume();
     void skip_whitespace();
     Token next_token();
 };

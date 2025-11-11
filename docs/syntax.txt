@@ -1,0 +1,157 @@
+int x = 10;
+auto y = 10;
+const int z = 10;
+
+merge -> merges namespace (no longer have to go py:)
+
+// opened files automatically close when going out of scope
+// allocated memory gets auto deallocated when going out of scope
+
+auto add(auto* arr, uint8 i) {
+    return arr[i];
+}
+
+int main() {
+    print("hello");
+    println("hi");
+    return 0;
+}
+
+if / else / while / for / break / continue / return
+import io (minimal printing & file IO)
+import mem (alloc/free, memcpy, memset)
+import math (numeric ops)
+from collections import list, heap, ..
+
+str is immutable utf8
+void (no type or no return)
+
+stdlib stuff:
+len()
+strcpy() (no strcpy, force safety)
+
+DECLARATIONS:
+const, enum, class, private, public, protected (supports struct-like func with certain specifications)
+
+CONTROL FLOW:
+if, elif, else, for, while, do, break, continue, return
+
+LOGICAL OPS / VALUES:
+true, false, &, |, !, ^, ==, !=, null, <, >
+
+BITWISE OPS:
+&& and
+|| or
+^^ xor
+!! not
+>> shift left
+<< shift right
+
+MODULES
+import, from, export
+
+ERROR HANDLING
+try, catch, finally
+
+PATTERN MATCHING
+match, case
+
+TYPES:
+- bool
+- char, str
+- byte, short, int, long
+- ubyte, ushort, uint, ulong
+- float, double
+- * (ptr), & (ref)
+- global
+- void
+
+0..n is shorthand for converting a range into an iterable. lists and other DSs are also iterables, like in Python
+for i in 0..n {} == for (int i = 0; i < n; i++)
+
+for i : 0..n {
+
+}
+
+~ (class destructor)
+// or /* */ -> comments
+\ (escape character)
+: (case 3: ..., within an iterable, like for i : 0..n or for n : nums, or in ternaries)
+"" -> strings
+'' -> chars
+`` -> raw strings
+? -> nullable types (int? maybeValue;, ternary shorthand: ok ? 1 : 0, user?.name == user ? user.name : null)
+@ -> decorators, attributes, or compile-time metadata
+# -> preprocessor / pragma-like directives:
+$ -> compile-time execution (const table = $generate_sin_table(256);)
+
+println
+print
+perrln
+perr
+
+auto formats strings in these 2 fashions:
+str name = "Bryan";
+print("Hello {name}");
+print("Hello", name)
+
+both output:
+"Hello Bryan"
+
+
+
+(rust has good import syntax, look at that for inspo)
+import std.io
+merge import std.math, std.memory as std.mem
+merge from std.collections import list as array
+
+class Helper {
+    auto select(int* arr, ubyte i) {
+        return arr[i];
+    }
+
+    int factorial(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
+
+    void greet(str name) {
+        print("Hello {name}");
+    }
+}
+
+global const int LIMIT = 5;
+
+int main(int argc, str* argv ) {
+    str user = "Bryan";
+
+    Helper helper = Helper();
+    helper.greet(user);
+
+    println("Factorials up to {LIMIT}:");
+    for i : 0..LIMIT {
+        println("{i}! = {helper.factorial(i)}");
+    }
+
+    int* arr[10];
+    ubyte idx = 5;
+    int result = helper.select(arr, idx);
+    println("arr[{idx}] == {result}");
+
+    int* ptr = int(std:fs:File(64));
+    if (ptr != null) {
+        println("Allocated 64 bytes at {ptr}");
+        std:mem:free(ptr);
+    }
+
+    return 0;
+}
+
+MEMORY MODEL:
+- manual allocation and freeing
+- objects free after leaving scope (stdlib object destructors that safely manage resources)
+- buffer overflows/out-of-bounds (no strcpy, all functions bounds-bounded, including arr[i] indexing)
+- no borrow checker like Rust
+- no garbage collector like Java/Python

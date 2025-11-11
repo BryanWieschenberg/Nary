@@ -1,0 +1,39 @@
+#pragma once
+#include <string>
+#include <vector>
+#include <string_view>
+
+enum class TokenType {
+    Ret,
+    IntLit,
+    Semi,
+    End,
+    Invalid
+};
+
+struct Token {
+    TokenType type;
+    std::string_view lexeme;
+    size_t line;
+    size_t column;
+};
+
+std::string display_token(const Token& token);
+
+class Lexer {
+public:
+    explicit Lexer(std::string_view src);
+    
+    std::vector<Token> tokenize();
+
+private:
+    std::string_view src;
+    size_t pos;
+    size_t line;
+    size_t col;
+
+    char peek() const;
+    char get();
+    void skip_whitespace();
+    Token next_token();
+};

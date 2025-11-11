@@ -2,6 +2,7 @@
 !*/
 !*.*
 !LICENSE
+!Makefile
 *test*
 *.o
 *.asm

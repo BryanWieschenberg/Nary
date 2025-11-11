@@ -14,7 +14,7 @@ void error() {
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::printf("Incorrect usage. Correct usage is...\n");
-        std::printf("main <input.vl> <executable>\n");
+        std::printf("nary <input.na> <executable>\n");
         return EXIT_FAILURE;
     }
 
@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
 
     Parser parser(std::move(tokens));
     std::optional<NodeReturn> tree = parser.parse();
-
     if (!tree.has_value()) error();
 
     Generator generator(tree.value());

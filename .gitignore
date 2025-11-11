@@ -4,5 +4,5 @@
 *test*
 *.o
 *.asm
-*.vl
+*.na
 /build

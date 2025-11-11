@@ -59,8 +59,8 @@ private:
     const std::string src_;
     size_t index_ = 0;
 
-    [[nodiscard]] inline std::optional<char> peek(int ahead = 1) const {
-        if (index_ + ahead > src_.length()) {
+    [[nodiscard]] inline std::optional<char> peek(int ahead = 0) const {
+        if (index_ + ahead >= src_.length()) {
             return {};
         }
         return src_.at(index_ + ahead);

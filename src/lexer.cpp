@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cctype>
 #include <sstream>
 #include "lexer.hpp"
@@ -76,25 +77,37 @@ std::string to_str(TokenType type) {
     return "invalid";
 }
 
-std::string display_token(const Token& token) {
+void display_tokens(const std::vector<Token>& tokens, bool verbose) {
     std::ostringstream out;
-    switch (token.type) {
-        case TokenType::Ret:
-            out << "Ret - " << token.line << ":" << token.col;
-            break;
-        case TokenType::IntLit:
-            out << "IntLit:" << token.lexeme << " - "
-                << token.line << ":" << token.col;
-            break;
-        case TokenType::Semi:
-            out << "Semi - " << token.line << ":" << token.col;
-            break;
-        case TokenType::End:
-            out << "End - " << token.line << ":" << token.col;
-            break;
-        default:
-            out << "Invalid - " << token.line << ":" << token.col;
-            break;
+
+    for (const Token& token : tokens) {
+        switch (token.type) {
+            case TokenType::Ret:
+                out << "Ret";
+                break;
+            case TokenType::IntLit:
+                out << "IntLit(" << token.lexeme << ")";
+                break;
+            case TokenType::Semi:
+                out << "Semi";
+                break;
+            case TokenType::End:
+                out << "End";
+                break;
+            default:
+                out << "Invalid";
+                break;
+        }
+
+        if (verbose)
+            out << " - " << token.line << ":" << token.col;
+
+        out << " | ";
     }
-    return out.str();
+
+    std::string result = out.str();
+    if (!result.empty() && result.size() >= 3)
+        result.erase(result.size() - 3);
+
+    std::cout << result << "\n";
 }

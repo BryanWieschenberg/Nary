@@ -10,7 +10,7 @@ compile: build
 	@./build/nary examples/main.na main
 
 run:
-	@./build/main
+	@./main
 
 echo:
 	@echo $$?

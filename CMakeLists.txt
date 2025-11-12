@@ -8,6 +8,8 @@ add_executable(nary
     src/main.cpp
     src/lexer.cpp
     src/parser.cpp
+    src/ast.cpp
+    src/generator.cpp
 )
 
 target_include_directories(nary PRIVATE include)

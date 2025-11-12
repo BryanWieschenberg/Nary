@@ -1,11 +1,15 @@
 #pragma once
-#include <memory>
 #include <string>
 
 enum class ASTNodeType {
     RetStmt,
-    IntLit
+    IntLit,
+    BinaryExpr,
+    VarRef,
+    AssignStmt
 };
+
+enum class BinOp { Add, Sub, Mul, Div };
 
 struct ASTNode {
     ASTNodeType type;
@@ -14,18 +18,33 @@ struct ASTNode {
 
 struct IntLiteral : public ASTNode {
     int val;
-    IntLiteral(int v) : val(v) {
-        type = ASTNodeType::IntLit;
-    }
+    explicit IntLiteral(int v);
 };
 
 struct RetStmt : public ASTNode {
     IntLiteral* expr;
-    RetStmt(IntLiteral* e) : expr(e) {
-        type = ASTNodeType::RetStmt;
-    }
-
-    ~RetStmt() {
-        delete expr;
-    }
+    explicit RetStmt(IntLiteral* e);
+    ~RetStmt();
 };
+
+struct BinaryExpr : public ASTNode {
+    BinOp op;
+    ASTNode* left;
+    ASTNode* right;
+    BinaryExpr(BinOp o, ASTNode* l, ASTNode* r);
+    ~BinaryExpr();
+};
+
+struct VarRef : public ASTNode {
+    std::string name;
+    explicit VarRef(std::string n);
+};
+
+struct AssignStmt : public ASTNode {
+    std::string name;
+    ASTNode* value;
+    AssignStmt(std::string n, ASTNode* v);
+    ~AssignStmt();
+};
+
+void display_ast(const ASTNode* node, int indent = 0);

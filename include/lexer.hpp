@@ -19,12 +19,11 @@ struct Token {
 };
 
 std::string to_str(TokenType type);
-std::string display_token(const Token& token);
+void display_tokens(const std::vector<Token>& tokens, bool verbose = false);
 
 class Lexer {
 public:
     Lexer(std::string_view src);
-    
     std::vector<Token> tokenize();
 
 private:

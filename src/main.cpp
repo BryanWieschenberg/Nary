@@ -3,6 +3,7 @@
 #include <sstream>
 #include "lexer.hpp"
 #include "parser.hpp"
+#include "generator.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc != 3) {
@@ -22,16 +23,23 @@ int main(int argc, char* argv[]) {
 
     Lexer lexer(src);
     std::vector<Token> tokens = lexer.tokenize();
-
-    for (const Token& t : tokens)
-        std::cout << display_token(t) << " | ";
-    std::cout << "\n";
+    display_tokens(tokens); // DISPLAY
 
     Parser parser(tokens);
     ASTNode* ast = parser.parse();
-
-    if (ast) std::cout << "SUCCESS\n";
-    delete ast;
+    display_ast(ast); // DISPLAY
     
+    if (ast) {
+        {
+            std::ofstream out("out.asm");
+            Generator gen(out);
+            gen.generate(ast);
+        }
+        delete ast;
+
+        std::system("nasm -f elf64 out.asm -o out.o");
+        std::system("ld out.o -o main");
+    }
+
     return 0;
 }
